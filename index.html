@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apostila SonarQube para QAs</title>
   <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
         body {
             box-sizing: border-box;
@@ -506,13 +508,14 @@
             color: #1e40af;
             font-size: 2.4rem;
             font-weight: 800;
-            margin: 25px 0;
+            margin: 25px auto;
             text-decoration: underline;
             text-decoration-color: #1e40af;
             text-align: center;
             display: block;
             letter-spacing: 1px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+            max-width: 80%;
         }
 
 
@@ -1682,7 +1685,9 @@ jobs:
           <p>Este certificado atesta o conhecimento adquirido sobre análise estática de código, Quality Gates, métricas de qualidade e integração com pipelines CI/CD.</p>
          </div>
         </div>
-        <div style="text-align: center; margin-top: 20px;"><button class="quiz-btn" onclick="closeCertificate()">Fechar Certificado</button>
+        <div style="text-align: center; margin-top: 20px;">
+         <button class="quiz-btn" onclick="closeCertificate()">Fechar Certificado</button>
+         <button class="quiz-btn" id="download-certificate-btn" onclick="downloadCertificatePDF()" style="background: #10b981;">⬇️ Baixar PDF</button>
         </div>
        </div>
       </div>
@@ -2451,11 +2456,11 @@ jobs:
 
         function generateCertificate() {
             const score = calculateScore();
-            
+
             document.getElementById('certificate-name').textContent = userData.name;
             document.getElementById('certificate-score').textContent = `${score.correct}/${score.total} (${score.percentage}%)`;
             document.getElementById('certificate-date').textContent = new Date().toLocaleDateString('pt-BR');
-            
+
             let proficiencyLevel = '';
             if (score.percentage >= 90) {
                 proficiencyLevel = 'Excelente';
@@ -2468,11 +2473,53 @@ jobs:
             } else {
                 proficiencyLevel = 'Em Desenvolvimento';
             }
-            
+
             document.getElementById('certificate-level').textContent = proficiencyLevel;
-            
+
             document.getElementById('score-container').style.display = 'none';
             document.getElementById('certificate-container').style.display = 'block';
+        }
+
+        async function downloadCertificatePDF() {
+            if (!window.html2canvas || !window.jspdf) {
+                alert('Não foi possível carregar os recursos necessários para gerar o PDF. Tente novamente.');
+                return;
+            }
+
+            const certificateElement = document.querySelector('#certificate-container .certificate');
+            if (!certificateElement) {
+                alert('Certificado não encontrado. Gere o certificado antes de tentar fazer o download.');
+                return;
+            }
+
+            try {
+                const canvas = await html2canvas(certificateElement, { scale: 2, backgroundColor: '#ffffff' });
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'pt', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+                const rawName = userData?.name || 'certificado';
+                const safeName = rawName
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-zA-Z0-9\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+
+                pdf.save(`certificado-${safeName || 'usuario'}.pdf`);
+            } catch (error) {
+                console.error('Erro ao gerar PDF do certificado:', error);
+                alert('Ocorreu um erro ao gerar o PDF. Atualize a página e tente novamente.');
+            }
         }
 
         function closeCertificate() {
