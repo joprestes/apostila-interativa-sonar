@@ -517,7 +517,7 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
             max-width: 80%;
         }
-
+        
 
         .certificate-body h4 {
             color: #111827;
@@ -525,6 +525,14 @@
             font-style: italic;
             margin: 20px 0;
         }
+
+        #certificate-container .certificate-student-name {
+            display: block;              
+            text-align: center;
+            justify-content: center;     
+            margin: 25px auto;
+            text-underline-offset: 6px;           
+            }
 
         .certificate-details {
             background: rgba(30, 64, 175, 0.1);
@@ -623,6 +631,12 @@
             align-items: center;
             gap: 10px;
         }
+
+        .section h3:not(.certificate-student-name) {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            }
 
         .section h4 {
             color: #1e40af;
