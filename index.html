@@ -561,8 +561,8 @@
         }
 
         .result-item.correct {
-            border-left-color: #10b981;
-            background: rgba(16, 185, 129, 0.05);
+            border-left-color: #4ade80;         
+            background: rgba(134, 239, 172, 0.25)
         }
 
         .result-item.incorrect {
@@ -686,22 +686,28 @@
         }
 
         .pillar-card {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+        color: #1e3a8a;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(147, 197, 253, 0.25);
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
         .pillar-card h4 {
-            color: white;
+            color: #1e3a8a;
             font-size: 1.5rem;
             margin-bottom: 15px;
+        }
+
+
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
         }
 
         .quiz-container {
@@ -778,7 +784,7 @@
         }
 
         .score-display {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #d1fae5; ;
             color: white;
             padding: 20px;
             border-radius: 10px;
