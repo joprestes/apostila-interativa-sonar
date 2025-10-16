@@ -70,7 +70,7 @@ Mesmo sendo um único arquivo, o código está cuidadosamente organizado em trê
 
 ---
 
-## 👩‍💻 Autoria e Desenvolvimento
+## 👩‍💻 Autoria e Desenvolvimento 💜
 
 Desenvolvido com 💜 por **Joelma Prestes Ferreira**
 
