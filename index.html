@@ -2205,6 +2205,14 @@ jobs:
             if (currentSection.id === 'quiz' && !quizStarted) {
                 initializeQuiz();
             }
+
+            // Ensure the main content area returns to the top when changing sections
+            const contentArea = document.querySelector('.content-area');
+            if (contentArea) {
+                contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         function updateNavigationButtons() {
